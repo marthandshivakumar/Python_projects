@@ -1,0 +1,120 @@
+class Employee:
+    def __init__(self, employee_id, name, department, position, salary):
+        self.employee_id = employee_id
+        self.name = name
+        self.department = department
+        self.position = position
+        self.salary = salary
+
+    def __str__(self):
+        """Return a formatted string representing the employee."""
+        return f"ID: {self.employee_id}, Name: {self.name}, Department: {self.department}, Position: {self.position}, Salary: ${self.salary}"
+
+class EmployeeDirectory:
+    def __init__(self):
+        self.employees = {}
+
+    def add_employee(self, employee_id, name, department, position, salary):
+        """Add a new employee to the directory."""
+        if employee_id in self.employees:
+            print(f"Employee with ID {employee_id} already exists.")
+        else:
+            self.employees[employee_id] = Employee(employee_id, name, department, position, salary)
+            print(f"Employee {name} added successfully.")
+
+    def delete_employee(self, employee_id):
+        """Delete an employee by their ID."""
+        if employee_id in self.employees:
+            removed_employee = self.employees.pop(employee_id)
+            print(f"Employee {removed_employee.name} removed successfully.")
+        else:
+            print("Employee not found.")
+
+    def search_employee(self, name):
+        """Search for an employee by name."""
+        found = False
+        for employee in self.employees.values():
+            if name.lower() in employee.name.lower():
+                print(employee)
+                found = True
+        if not found:
+            print("No employee found with that name.")
+
+    def view_all_employees(self):
+        """Display a list of all employees."""
+        if not self.employees:
+            print("No employees in the directory.")
+        else:
+            print("\nEmployee Directory:")
+            for employee in self.employees.values():
+                print(employee)
+
+    def sort_employees_by_name(self):
+        """Sort employees by their name."""
+        sorted_employees = sorted(self.employees.values(), key=lambda emp: emp.name)
+        print("\nSorted Employees by Name:")
+        for employee in sorted_employees:
+            print(employee)
+
+    def filter_employees_by_department(self, department):
+        """Filter and display employees by department."""
+        filtered_employees = [employee for employee in self.employees.values() if employee.department.lower() == department.lower()]
+        if filtered_employees:
+            print(f"\nEmployees in {department} Department:")
+            for employee in filtered_employees:
+                print(employee)
+        else:
+            print(f"No employees found in {department} department.")
+
+    def exit_system(self):
+        """Exit the application."""
+        print("Exiting the Employee Directory System. Goodbye!")
+        exit()
+
+# Create an instance of the Employee Directory
+directory = EmployeeDirectory()
+
+# Main program loop
+while True:
+    print("\nEmployee Directory System")
+    print("1. Add Employee")
+    print("2. Delete Employee")
+    print("3. Search Employee")
+    print("4. View All Employees")
+    print("5. Sort Employees by Name")
+    print("6. Filter Employees by Department")
+    print("7. Exit")
+    
+    choice = input("Choose an option (1-7): ").strip()
+
+    if choice == "1":
+        employee_id = input("Enter employee ID: ").strip()
+        name = input("Enter employee name: ").strip()
+        department = input("Enter department: ").strip()
+        position = input("Enter position: ").strip()
+        salary = float(input("Enter salary: ").strip())
+        directory.add_employee(employee_id, name, department, position, salary)
+
+    elif choice == "2":
+        employee_id = input("Enter employee ID to delete: ").strip()
+        directory.delete_employee(employee_id)
+
+    elif choice == "3":
+        name = input("Enter employee name to search: ").strip()
+        directory.search_employee(name)
+
+    elif choice == "4":
+        directory.view_all_employees()
+
+    elif choice == "5":
+        directory.sort_employees_by_name()
+
+    elif choice == "6":
+        department = input("Enter department to filter by: ").strip()
+        directory.filter_employees_by_department(department)
+
+    elif choice == "7":
+        directory.exit_system()
+
+    else:
+        print("Invalid option. Please choose between 1-7.")
